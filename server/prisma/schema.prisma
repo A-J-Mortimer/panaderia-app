@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Cocineras
+model Cocinera {
+  id        String   @id @default(cuid())
+  nombre    String
+  telefono  String
+  ventas    Float    @default(0)
+  pedidos   Pedido[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Clientes
+model Cliente {
+  id        String   @id @default(cuid())
+  nombre    String
+  telefono  String
+  pedidos   Pedido[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Ingredientes
+model Ingrediente {
+  id          String    @id @default(cuid())
+  nombre      String
+  descripcion String?
+  costoPorKg  Float
+  recetas     Receta[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Productos
+model Producto {
+  id                    String          @id @default(cuid())
+  nombre                String
+  descripcion           String?
+  tiempoElaboracion     Int             // en minutos
+  costoGasElectricidad  Float
+  precioVenta           Float
+  recetas               Receta[]
+  detallesPedido        DetallePedido[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
+
+// Recetas (relación Productos-Ingredientes)
+model Receta {
+  id            String      @id @default(cuid())
+  productoId    String
+  ingredienteId String
+  cantidad      Float
+  unidad        String      // kg, g, litros, etc.
+  producto      Producto    @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  ingrediente   Ingrediente @relation(fields: [ingredienteId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([productoId, ingredienteId])
+}
+
+// Pedidos
+model Pedido {
+  id             String          @id @default(cuid())
+  clienteId      String
+  cocineraId     String?
+  fechaPedido    DateTime        @default(now())
+  fechaEntrega   DateTime
+  estado         String          @default("Confirmado") // Confirmado, En preparación, Listo, Entregado, Cancelado
+  precioTotal    Float           @default(0)
+  cliente        Cliente         @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  cocinera       Cocinera?       @relation(fields: [cocineraId], references: [id])
+  detalles       DetallePedido[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+// Detalle de Pedidos (relación Pedidos-Productos)
+model DetallePedido {
+  id             String   @id @default(cuid())
+  pedidoId       String
+  productoId     String
+  cantidad       Int
+  precioUnitario Float
+  pedido         Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  producto       Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([pedidoId, productoId])
+}
