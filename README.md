@@ -220,28 +220,36 @@ El diseño utiliza tonos cálidos apropiados para una panadería:
 
 ## 🌐 Despliegue en Vercel
 
-### 1. Preparar el proyecto
+Para instrucciones completas de despliegue, consulta **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Guía paso a paso con capturas de pantalla y solución de problemas.
 
-Asegurarse de que `vercel.json` está configurado correctamente.
+### Inicio Rápido
 
-### 2. Configurar base de datos en Vercel
-
-1. Ir a tu proyecto en Vercel
-2. Crear una base de datos Postgres en la pestaña Storage
-3. Copiar la `DATABASE_URL` a las variables de entorno
-
-### 3. Configurar variables de entorno en Vercel
-
-Agregar las siguientes variables:
-- `DATABASE_URL`
-- `NODE_ENV=production`
-- `VITE_API_URL=https://tu-dominio.vercel.app/api`
-
-### 4. Desplegar
-
+**Opción 1: Script Automático**
 ```bash
+./deploy-vercel.sh
+```
+
+**Opción 2: Manual**
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Desplegar
 vercel
 ```
+
+### Requisitos
+- Cuenta de Vercel (gratis en [vercel.com](https://vercel.com))
+- Base de datos PostgreSQL (Vercel Postgres recomendado)
+
+### Variables de Entorno Requeridas
+```
+DATABASE_URL=postgresql://...
+NODE_ENV=production
+VITE_API_URL=/api
+```
+
+Ver **[DEPLOYMENT.md](./DEPLOYMENT.md)** para configuración completa.
 
 ## 🧪 Scripts Disponibles
 
