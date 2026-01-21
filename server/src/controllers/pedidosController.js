@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { ESTADOS_PEDIDO } from '../constants/estados.js';
 
 const prisma = new PrismaClient();
 
@@ -178,10 +179,9 @@ export const updatePedidoEstado = async (req, res, next) => {
     const { id } = req.params;
     const { estado } = req.body;
 
-    const validEstados = ['Confirmado', 'En preparación', 'Listo', 'Entregado', 'Cancelado'];
-    if (!estado || !validEstados.includes(estado)) {
+    if (!estado || !ESTADOS_PEDIDO.includes(estado)) {
       return res.status(400).json({ 
-        error: `Estado inválido. Debe ser uno de: ${validEstados.join(', ')}` 
+        error: `Estado inválido. Debe ser uno de: ${ESTADOS_PEDIDO.join(', ')}` 
       });
     }
 

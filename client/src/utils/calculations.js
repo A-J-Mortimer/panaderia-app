@@ -1,3 +1,5 @@
+import { ESTADO_COLORS } from '../constants/estados';
+
 /**
  * Calcula el costo total de un producto basado en sus ingredientes
  * @param {Array} recetas - Array de recetas con ingredientes y cantidades
@@ -102,13 +104,5 @@ export const formatDateForInput = (date) => {
  * @returns {string} Clase de color de Tailwind
  */
 export const getEstadoColor = (estado) => {
-  const colors = {
-    'Confirmado': 'bg-blue-100 text-blue-800',
-    'En preparación': 'bg-yellow-100 text-yellow-800',
-    'Listo': 'bg-green-100 text-green-800',
-    'Entregado': 'bg-gray-100 text-gray-800',
-    'Cancelado': 'bg-red-100 text-red-800',
-  };
-
-  return colors[estado] || 'bg-gray-100 text-gray-800';
+  return ESTADO_COLORS[estado] || 'bg-gray-100 text-gray-800';
 };

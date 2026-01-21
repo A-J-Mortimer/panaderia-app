@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { getEstadoColor } from '../../utils/calculations';
+import { ESTADOS_PEDIDO } from '../../constants/estados';
 
 const EstadoPedido = ({ estado, pedidoId, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedEstado, setSelectedEstado] = useState(estado);
-
-  const estados = ['Confirmado', 'En preparación', 'Listo', 'Entregado', 'Cancelado'];
 
   const handleChange = async (newEstado) => {
     setSelectedEstado(newEstado);
@@ -24,7 +23,7 @@ const EstadoPedido = ({ estado, pedidoId, onUpdate }) => {
         autoFocus
         className="text-sm px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-bakery-orange focus:border-transparent"
       >
-        {estados.map((est) => (
+        {ESTADOS_PEDIDO.map((est) => (
           <option key={est} value={est}>
             {est}
           </option>
